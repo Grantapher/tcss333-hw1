@@ -19,6 +19,8 @@ int main(void) {
     char current_month[8];
     int current_precip;
 
+    
+    printf("Monthly Totals\n");
     while(0 < count--) {
         //get the line
         scanf("%s\n", str);
