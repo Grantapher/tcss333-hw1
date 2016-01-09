@@ -57,10 +57,10 @@ int main(void) {
             current_precip += precip_times_100;
         }
 
+        //destruct the string splits
         free(tokens);
         free(split_date);
         free(split_precip);
-
     }
     
     //print the final month
@@ -74,6 +74,8 @@ void print_month(char* month, int precip) {
 }
 
 char** split_str(char* str, char delim) {
+    //count the number of tokens (1 by default,
+    //number or tokens is 1 + num of delimiters)
     int i, num_tokens = 1;
     for(i = 0; i < strlen(str); i++) {
         char c = str[i];
@@ -81,17 +83,23 @@ char** split_str(char* str, char delim) {
     }
 
     char** ret = (char**) malloc(sizeof(char*) * num_tokens);
-    ret[0] = str;
+    ret[0] = str; //first token starts at beginning of the string
     
     int array_index = 1;
     while(array_index < num_tokens) {
         char* currentChar;
-        for(currentChar = ret[array_index - 1]; 
-                *currentChar != delim; 
-                currentChar += sizeof(char));
-        *currentChar = '\0';
-        ret[array_index++] = currentChar + sizeof(char);
+
+        //find the next delimiter
+        for(currentChar = ret[array_index - 1]; //start in the previous string 
+                *currentChar != delim;          //until we find the delimiter
+                currentChar += sizeof(char));   //move the pointer up one character
+
+        *currentChar = '\0'; //null terminate the previous string
+        
+        //set the next token to start at the character after the delimiter
+        ret[array_index++] = currentChar + sizeof(char);  
     }  
 
+    //the final token will use the '\0' at the end of the original string
     return ret;
 }
